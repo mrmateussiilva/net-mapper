@@ -5,8 +5,8 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from .config import TEMPLATE, IGNORE
-from .data import safe, ign
+from app.config import TEMPLATE, IGNORE
+from app.data import safe, ign
 
 def build_switch_graph(sw_name: str, rows_df: pd.DataFrame) -> nx.Graph:
     """Builds a NetworkX graph for a single switch's topology."""

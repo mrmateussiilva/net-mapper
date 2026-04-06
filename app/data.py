@@ -6,7 +6,7 @@ from typing import Dict, List, Tuple
 import pandas as pd
 import streamlit as st
 
-from .config import SHEETS, IGNORE
+from app.config import SHEETS, IGNORE
 
 
 def safe(v) -> str:

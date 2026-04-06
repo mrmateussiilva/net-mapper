@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 
-from .data import safe, ign
+from app.data import safe, ign
 
 def patch_panel_html(pp_df: pd.DataFrame, pp_name: str, n_ports: int = 24) -> str:
     """Generates an HTML representation of a patch panel with LED status indicators."""

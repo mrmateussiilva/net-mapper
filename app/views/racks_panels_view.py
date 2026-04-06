@@ -2,9 +2,9 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from ..config import SHEETS, TEMPLATE, CMAP
-from ..data import hascol
-from ..ui import rack_diagram_html, patch_panel_html, go_wiki
+from app.config import SHEETS, TEMPLATE, CMAP
+from app.data import hascol
+from app.ui import rack_diagram_html, patch_panel_html, go_wiki
 
 def render_racks_view(dfs: dict):
     """Renders the physical Racks overview."""

@@ -1,8 +1,8 @@
 import pandas as pd
 import streamlit as st
 
-from ..data import ign
-from ..ui import go_wiki, style_status
+from app.data import ign
+from app.ui import go_wiki, style_status
 
 def render_spotlight_view(all_df: pd.DataFrame):
     """Renders the global search spotlight."""

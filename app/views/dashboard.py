@@ -3,8 +3,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from ..data import health_score, hascol, ign
-from ..config import TEMPLATE
+from app.data import health_score, hascol, ign
+from app.config import TEMPLATE
 
 def render_dashboard(dfs: dict, all_df: pd.DataFrame):
     """Renders the main dashboard view with consolidated metrics and charts."""

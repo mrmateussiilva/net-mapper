@@ -2,8 +2,8 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from ..data import detect_errors
-from ..config import TEMPLATE
+from app.data import detect_errors
+from app.config import TEMPLATE
 
 def render_errors_view(dfs: dict):
     """Renders the global errors and inconsistencies view."""

@@ -2,10 +2,10 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from ..data import detect_errors, safe, ign
-from ..graphs import build_switch_graph, switch_radial_fig
-from ..ui import go_wiki, style_status, patch_panel_html, rack_diagram_html
-from ..config import TEMPLATE, CMAP
+from app.data import detect_errors, safe, ign
+from app.graphs import build_switch_graph, switch_radial_fig
+from app.ui import go_wiki, style_status, patch_panel_html, rack_diagram_html
+from app.config import TEMPLATE, CMAP
 
 def render_wiki_switch(sw_name: str, all_df: pd.DataFrame):
     """Renders the detailed wiki page for a specific Switch."""

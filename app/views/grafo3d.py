@@ -1,9 +1,9 @@
 import pandas as pd
 import streamlit as st
 
-from ..config import SHEETS
-from ..graphs import global_3d_fig
-from ..data import ign
+from app.config import SHEETS
+from app.graphs import global_3d_fig
+from app.data import ign
 
 def render_grafo3d(all_df: pd.DataFrame):
     """Renders the 3D topology graph page."""

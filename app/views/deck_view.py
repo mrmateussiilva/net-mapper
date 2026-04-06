@@ -3,10 +3,10 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from ..data import health_score, hascol, ign, safe, detect_errors
-from ..graphs import build_switch_graph, switch_radial_fig
-from ..ui import go_wiki, style_status, patch_panel_html
-from ..config import TEMPLATE, CMAP, IGNORE
+from app.data import health_score, hascol, ign, safe, detect_errors
+from app.graphs import build_switch_graph, switch_radial_fig
+from app.ui import go_wiki, style_status, patch_panel_html
+from app.config import TEMPLATE, CMAP, IGNORE
 
 def render_deck_view(sheet_name: str, full_df: pd.DataFrame):
     """Renders the detailed view for a specific deck/sheet."""
