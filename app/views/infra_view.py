@@ -13,6 +13,7 @@ from app.infra_db import (
     create_connection, delete_connection,
     list_all_ports_flat,
 )
+from app.views.import_view import render_import_view
 
 # ── Session-state helpers ─────────────────────────────────────────────────────
 
@@ -611,7 +612,7 @@ def render_infra():
         st.markdown("**📂 Infraestrutura**")
         sub = st.radio(
             "Gerenciadores",
-            ["📋 Visão Geral", "🗄️ Racks", "📟 Equipamentos", "🔌 Portas", "🔗 Conexões"],
+            ["📋 Visão Geral", "🗄️ Racks", "📟 Equipamentos", "🔌 Portas", "🔗 Conexões", "📥 Importar"],
             key="infra_sub_nav",
             label_visibility="collapsed",
         )
@@ -627,6 +628,8 @@ def render_infra():
         page = "ports"
     elif sub == "🔗 Conexões":
         page = "connections"
+    elif sub == "📥 Importar":
+        page = "import"
 
     # Back button for detail pages
     if page in ("equipment_detail", "edit_equipment"):
@@ -656,6 +659,8 @@ def render_infra():
         render_port_manager()
     elif page == "connections":
         render_connection_manager()
+    elif page == "import":
+        render_import_view()
     elif page == "equipment_detail":
         eq_id = st.session_state.get("infra_equipment_id")
         if eq_id:
