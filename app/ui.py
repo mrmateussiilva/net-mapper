@@ -118,6 +118,14 @@ def init_wiki_state():
     if "wiki_name" not in st.session_state: 
         st.session_state.wiki_name = None
 
+
+def init_infra_state():
+    """Initializes session state required for the Infrastructure wiki navigation."""
+    if "infra_page" not in st.session_state:
+        st.session_state["infra_page"] = "index"
+    if "infra_equipment_id" not in st.session_state:
+        st.session_state["infra_equipment_id"] = None
+
 def go_wiki(wtype: str, wname: str):
     """Sets session state to navigate to a specific Wiki page and reruns."""
     st.session_state.wiki_type = wtype

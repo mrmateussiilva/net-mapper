@@ -13,8 +13,9 @@ st.set_page_config(
 # Application modules
 from app.config import inject_custom_css
 from app.data import load_and_process_data
-from app.ui import init_wiki_state
+from app.ui import init_wiki_state, init_infra_state
 
+from app.infra_db import init_db
 from app.views.dashboard import render_dashboard
 from app.views.grafo3d import render_grafo3d
 from app.views.deck_view import render_deck_view
@@ -22,10 +23,13 @@ from app.views.racks_panels_view import render_racks_view, render_patch_panels_v
 from app.views.wiki_view import render_wiki
 from app.views.errors_view import render_errors_view
 from app.views.spotlight_view import render_spotlight_view
+from app.views.infra_view import render_infra
 
 # Initialize UI styling and states
 inject_custom_css()
 init_wiki_state()
+init_infra_state()
+init_db()  # Creates infra tables in cabling.db if they don't exist yet
 
 SHEET_MAP = {
     "📋 Deck B · L717": "Deck B - L717",
@@ -38,6 +42,14 @@ with st.sidebar:
     st.title("🔌 Safe Notos")
     uploaded_file = st.file_uploader("Planilha (.xlsx)", type=["xlsx"])
     st.divider()
+
+    # Infra nav is always visible (no spreadsheet required)
+    nav_always = st.radio("Modo", ["📊 Mapeamento de Rede", "🏭 Infraestrutura"],
+                          label_visibility="collapsed", key="top_mode")
+
+if nav_always == "🏭 Infraestrutura":
+    render_infra()
+    st.stop()
 
 if uploaded_file is None:
     st.title("🔌 Network Mapping — Safe Notos")
