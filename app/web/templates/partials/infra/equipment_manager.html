@@ -1,0 +1,109 @@
+<div id="equipment-manager-inner">
+  <section class="form-card">
+    <div class="section-head">
+      <div>
+        <div class="card-kicker">Novo equipamento</div>
+        <h3>Criar equipamento</h3>
+      </div>
+    </div>
+
+    {% if message %}
+    <div class="alert alert-{{ message.kind }}">{{ message.text }}</div>
+    {% endif %}
+
+    <form
+      class="stack-form"
+      hx-post="/infra/equipment"
+      hx-target="#equipment-manager"
+      hx-select="#equipment-manager-inner"
+      hx-swap="innerHTML"
+    >
+      <div class="form-grid">
+        <label>
+          <span>Nome</span>
+          <input type="text" name="name" value="{{ submitted.name if submitted else '' }}" placeholder="SW-01" required>
+        </label>
+        <label>
+          <span>Tipo</span>
+          <select name="type_" required>
+            {% for device_type in device_types %}
+            <option value="{{ device_type }}" {% if submitted and submitted.type_ == device_type %}selected{% endif %}>{{ device_type }}</option>
+            {% endfor %}
+          </select>
+        </label>
+      </div>
+
+      <div class="form-grid">
+        <label>
+          <span>Rack</span>
+          <select name="rack_id">
+            <option value="">Sem rack</option>
+            {% for rack in rack_options %}
+            <option value="{{ rack.id }}" {% if submitted and submitted.rack_id == rack.id|string %}selected{% endif %}>{{ rack.name }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>
+          <span>Posição no rack</span>
+          <input type="text" name="rack_position" value="{{ submitted.rack_position if submitted else '' }}" placeholder="12U">
+        </label>
+      </div>
+
+      <div class="form-grid">
+        <label>
+          <span>Fabricante</span>
+          <input type="text" name="manufacturer" value="{{ submitted.manufacturer if submitted else '' }}" placeholder="Cisco">
+        </label>
+        <label>
+          <span>Modelo</span>
+          <input type="text" name="model" value="{{ submitted.model if submitted else '' }}" placeholder="Catalyst 9300">
+        </label>
+      </div>
+
+      <label>
+        <span>Notas</span>
+        <textarea name="notes" rows="4" placeholder="Observações operacionais">{{ submitted.notes if submitted else '' }}</textarea>
+      </label>
+
+      <div class="form-actions">
+        <button type="submit">Salvar equipamento</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="table-card">
+    <div class="section-head">
+      <div>
+        <div class="card-kicker">Inventário</div>
+        <h3>{{ equipment|length }} equipamento(s) cadastrados</h3>
+      </div>
+    </div>
+
+    {% if equipment %}
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Tipo</th>
+          <th>Rack</th>
+          <th>Portas</th>
+          <th>Conexões</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in equipment %}
+        <tr>
+          <td>{{ item.name }}</td>
+          <td>{{ item.type }}</td>
+          <td>{{ item.rack_name or "—" }}</td>
+          <td>{{ item.port_count }}</td>
+          <td>{{ item.connection_count }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="muted">Nenhum equipamento cadastrado ainda.</p>
+    {% endif %}
+  </section>
+</div>

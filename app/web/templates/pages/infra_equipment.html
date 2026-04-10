@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <div class="eyebrow">Infraestrutura / Equipamentos</div>
+  <h2>CRUD inicial de equipamentos</h2>
+  <p>
+    Esta tela estende o mesmo padrão de racks para equipamentos, com envio parcial via HTMX e
+    associação opcional a um rack já cadastrado.
+  </p>
+</section>
+
+<section id="equipment-manager" class="manager-shell">
+  {% include "partials/infra/equipment_manager.html" %}
+</section>
+{% endblock %}
