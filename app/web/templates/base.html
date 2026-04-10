@@ -18,11 +18,7 @@
 
       <nav class="nav">
         {% for item in nav_items or [] %}
-          {% if item.disabled %}
-            <span class="nav-link is-disabled">{{ item.label }}</span>
-          {% else %}
-            <a class="nav-link" href="{{ item.href }}">{{ item.label }}</a>
-          {% endif %}
+          <a class="nav-link{% if item.active %} is-active{% endif %}" href="{{ item.href }}">{{ item.label }}</a>
         {% endfor %}
       </nav>
     </aside>

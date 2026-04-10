@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <div class="eyebrow">Infraestrutura</div>
+  <h2>Entrada inicial da nova interface operacional</h2>
+  <p>
+    Esta pagina valida o acesso ao banco SQLite existente e prepara a base para migrar CRUD, importacao,
+    detalhe de equipamentos e navegacao parcial com HTMX.
+  </p>
+</section>
+
+<section class="metrics">
+  <article class="metric-card">
+    <span>Racks</span>
+    <strong>{{ summary.racks }}</strong>
+  </article>
+  <article class="metric-card">
+    <span>Equipamentos</span>
+    <strong>{{ summary.equipment }}</strong>
+  </article>
+  <article class="metric-card">
+    <span>Portas</span>
+    <strong>{{ summary.ports }}</strong>
+  </article>
+  <article class="metric-card">
+    <span>Conexoes</span>
+    <strong>{{ summary.connections }}</strong>
+  </article>
+</section>
+
+<section class="table-card">
+  <div class="section-head">
+    <div>
+      <div class="card-kicker">Preview</div>
+      <h3>Primeiros equipamentos</h3>
+    </div>
+  </div>
+
+  {% if summary.equipment_preview %}
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Tipo</th>
+        <th>Rack</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in summary.equipment_preview %}
+      <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ item.type }}</td>
+        <td>{{ item.rack_name or "—" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">O banco esta acessivel, mas ainda nao ha equipamentos cadastrados.</p>
+  {% endif %}
+</section>
+
+<section class="table-card action-card">
+  <div class="section-head">
+    <div>
+      <div class="card-kicker">Próximo passo</div>
+      <h3>Gerenciar racks com HTMX</h3>
+    </div>
+    <a class="button-link" href="/infra/racks">Abrir gerenciador</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <div class="eyebrow">Infraestrutura / Racks</div>
+  <h2>Primeiro fluxo HTMX real</h2>
+  <p>
+    Esta tela já permite criar racks na nova stack sem Streamlit. O formulário envia via HTMX e atualiza
+    apenas o bloco do gerenciador.
+  </p>
+</section>
+
+<section id="rack-manager" class="manager-shell">
+  {% include "partials/infra/racks_manager.html" %}
+</section>
+{% endblock %}

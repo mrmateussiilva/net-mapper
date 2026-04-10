@@ -1,0 +1,76 @@
+<div id="rack-manager-inner">
+  <section class="form-card">
+    <div class="section-head">
+      <div>
+        <div class="card-kicker">Novo rack</div>
+        <h3>Criar rack</h3>
+      </div>
+    </div>
+
+    {% if message %}
+    <div class="alert alert-{{ message.kind }}">{{ message.text }}</div>
+    {% endif %}
+
+    <form
+      class="stack-form"
+      hx-post="/infra/racks"
+      hx-target="#rack-manager"
+      hx-select="#rack-manager-inner"
+      hx-swap="innerHTML"
+    >
+      <div class="form-grid">
+        <label>
+          <span>Nome</span>
+          <input type="text" name="name" value="{{ submitted.name if submitted else '' }}" placeholder="Rack A" required>
+        </label>
+        <label>
+          <span>Localização</span>
+          <input type="text" name="location" value="{{ submitted.location if submitted else '' }}" placeholder="Sala de TI · Andar 3">
+        </label>
+      </div>
+
+      <label>
+        <span>Notas</span>
+        <textarea name="notes" rows="4" placeholder="Observações operacionais">{{ submitted.notes if submitted else '' }}</textarea>
+      </label>
+
+      <div class="form-actions">
+        <button type="submit">Salvar rack</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="table-card">
+    <div class="section-head">
+      <div>
+        <div class="card-kicker">Inventário</div>
+        <h3>{{ racks|length }} rack(s) cadastrados</h3>
+      </div>
+    </div>
+
+    {% if racks %}
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Localização</th>
+          <th>Equipamentos</th>
+          <th>Notas</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rack in racks %}
+        <tr>
+          <td>{{ rack.name }}</td>
+          <td>{{ rack.location or "—" }}</td>
+          <td>{{ rack.equipment_count }}</td>
+          <td>{{ rack.notes or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="muted">Nenhum rack cadastrado ainda.</p>
+    {% endif %}
+  </section>
+</div>

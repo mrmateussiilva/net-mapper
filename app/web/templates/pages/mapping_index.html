@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <div class="eyebrow">Mapeamento</div>
+  <h2>Entrada inicial da nova interface de analise</h2>
+  <p>
+    Esta pagina ja consome o servico puro de processamento da planilha. Por enquanto ela apresenta
+    um resumo da planilha local do projeto para validar a camada nova sem depender do Streamlit.
+  </p>
+</section>
+
+{% if summary %}
+<section class="metrics">
+  <article class="metric-card">
+    <span>Planilha</span>
+    <strong>{{ summary.source_name }}</strong>
+  </article>
+  <article class="metric-card">
+    <span>Total de linhas</span>
+    <strong>{{ summary.total_rows }}</strong>
+  </article>
+  <article class="metric-card">
+    <span>Switches</span>
+    <strong>{{ summary.switches }}</strong>
+  </article>
+</section>
+
+<section class="table-card">
+  <div class="section-head">
+    <div>
+      <div class="card-kicker">Decks</div>
+      <h3>Resumo por aba</h3>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Deck</th>
+        <th>Linhas</th>
+        <th>Ativas</th>
+        <th>Desconhecidas</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for deck in summary.decks %}
+      <tr>
+        <td>{{ deck.name }}</td>
+        <td>{{ deck.rows }}</td>
+        <td>{{ deck.active }}</td>
+        <td>{{ deck.unknown }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% else %}
+<section class="table-card">
+  <div class="section-head">
+    <div class="card-kicker">Sem fonte padrao</div>
+    <h3>Planilha local nao encontrada</h3>
+  </div>
+  <p class="muted">
+    A rota esta pronta, mas nao localizou o arquivo de exemplo no projeto. O proximo passo sera trocar
+    isso por upload de sessao e fragments HTMX.
+  </p>
+</section>
+{% endif %}
+{% endblock %}

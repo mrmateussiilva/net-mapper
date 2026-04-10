@@ -1,12 +1,9 @@
-from pathlib import Path
-
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
+
+from app.web.deps import build_nav_items, templates
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 router = APIRouter()
 
 
@@ -22,11 +19,6 @@ def home(request: Request):
         "pages/home.html",
         {
             "title": "Migracao FastAPI + HTMX",
-            "nav_items": [
-                {"href": "/", "label": "Inicio"},
-                {"href": "/mapping", "label": "Mapeamento", "disabled": True},
-                {"href": "/infra", "label": "Infraestrutura", "disabled": True},
-            ],
+            "nav_items": build_nav_items("/"),
         },
     )
-
