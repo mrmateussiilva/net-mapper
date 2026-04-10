@@ -7,56 +7,7 @@ import streamlit as st
 
 from app.config import TEMPLATE, IGNORE
 from app.data import safe, ign
-
-def build_switch_graph(sw_name: str, rows_df: pd.DataFrame) -> nx.Graph:
-    """Builds a NetworkX graph for a single switch's topology."""
-    G = nx.Graph()
-    sw_id = f"SW:{sw_name}"
-    G.add_node(sw_id, type="switch", label=sw_name)
-    
-    for _, row in rows_df.iterrows():
-        panel = safe(row.get("Optic Patch Painel", ""))
-        wp = safe(row.get("Wall Port", ""))
-        rack = safe(row.get("Rack", ""))
-        port = str(int(row["Port"])) if pd.notna(row.get("Port")) else "?"
-        sw_pt = safe(row.get("Switch Port", ""))
-        obs = safe(row.get("Observation", ""))
-        active = safe(row.get("Active_norm", ""))
-        
-        pp_id = f"PP:{panel}" if panel and not ign(panel) else f"RK:{rack}"
-        pp_lbl = panel if panel and not ign(panel) else rack
-        
-        if pp_id not in G:
-            G.add_node(pp_id, type="panel", label=pp_lbl)
-            
-        hover = f"<b>{pp_lbl} → {sw_name}</b><br>PP porta: {port} | SW porta: {sw_pt}<br>Status: {active}"
-        if obs and not ign(obs): 
-            hover += f"<br>Obs: {obs}"
-            
-        G.add_edge(sw_id, pp_id, hover=hover)
-        
-        if wp and not ign(wp):
-            wp_id = f"WP:{wp}"
-            if wp_id not in G:
-                G.add_node(wp_id, type="wallport", label=wp)
-            G.add_edge(pp_id, wp_id, hover=f"<b>Wall Port: {wp}</b><br>Via: {pp_lbl} porta {port}")
-            
-    return G
-
-
-def radial_pos(G: nx.Graph, center: str) -> dict:
-    """Calculates radial positions for switch topology graph."""
-    pos = {center: (0.0, 0.0)}
-    l1 = list(G.neighbors(center))
-    for i, n in enumerate(l1):
-        a = 2 * math.pi * i / max(len(l1), 1)
-        pos[n] = (math.cos(a), math.sin(a))
-        l2 = [nb for nb in G.neighbors(n) if nb != center and nb not in pos]
-        sp = math.pi / max(len(l1), 1) * 0.85
-        for j, nb in enumerate(l2):
-            ba = a + sp * (j - (len(l2)-1)/2) / max(len(l2), 1) * len(l2)
-            pos[nb] = (1.9 * math.cos(ba), 1.9 * math.sin(ba))
-    return pos
+from app.services.graph_service import build_switch_graph, get_global_3d_layout as get_global_3d_layout_service, radial_pos
 
 
 def switch_radial_fig(G: nx.Graph, sw_id: str, sw_name: str) -> go.Figure:
@@ -124,48 +75,8 @@ def switch_radial_fig(G: nx.Graph, sw_id: str, sw_name: str) -> go.Figure:
 
 @st.cache_data(show_spinner=False)
 def get_global_3d_layout(df_json: str):
-    """
-    Computes and caches the 3D spring layout for the global graph.
-    We pass JSON to safely hash for streamlit caching.
-    """
-    df = pd.read_json(df_json, orient="records")
-    G = nx.Graph()
-    for _, row in df.iterrows():
-        sw = safe(row.get("Switch", ""))
-        pp = safe(row.get("Optic Patch Painel", ""))
-        rk = safe(row.get("Rack", ""))
-        
-        if ign(sw) or not sw: 
-            continue
-            
-        sw_id = f"SW:{sw}"
-        rk_id = f"RK:{rk}"
-        pp_id = f"PP:{pp}" if pp and not ign(pp) else None
-        
-        G.add_node(sw_id, type="switch", label=sw)
-        G.add_node(rk_id, type="rack", label=rk)
-        
-        if pp_id:
-            G.add_node(pp_id, type="panel", label=pp)
-            G.add_edge(rk_id, pp_id)
-            G.add_edge(pp_id, sw_id)
-        else:
-            G.add_edge(rk_id, sw_id)
-            
-    if len(G.nodes) > 160:
-        top = sorted(G.degree, key=lambda x: x[1], reverse=True)[:160]
-        G = G.subgraph([n for n, _ in top]).copy()
-        
-    pos = nx.spring_layout(G, dim=3, seed=42, k=1.0)
-    
-    # We must return serialized/primitive friendly structures from cache
-    nodes_data = {
-        node: {"pos": pos[node], "type": G.nodes[node].get("type", "panel"), 
-               "label": G.nodes[node].get("label", node), "degree": G.degree(node)}
-        for node in G.nodes()
-    }
-    edges = list(G.edges())
-    return nodes_data, edges
+    """Cached Streamlit wrapper around the pure graph service."""
+    return get_global_3d_layout_service(df_json)
 
 
 def global_3d_fig(all_active: pd.DataFrame) -> go.Figure:
