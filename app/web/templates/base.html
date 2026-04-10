@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title or "Network Mapping" }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/app.css') }}">
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-kicker">FinderBit</span>
+        <h1>Network Mapping</h1>
+        <p>Base inicial da migracao para FastAPI + HTMX.</p>
+      </div>
+
+      <nav class="nav">
+        {% for item in nav_items or [] %}
+          {% if item.disabled %}
+            <span class="nav-link is-disabled">{{ item.label }}</span>
+          {% else %}
+            <a class="nav-link" href="{{ item.href }}">{{ item.label }}</a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+    </aside>
+
+    <main class="content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

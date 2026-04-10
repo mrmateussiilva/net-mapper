@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <div class="eyebrow">Plano em execucao</div>
+  <h2>Migracao de Streamlit para FastAPI + HTMX</h2>
+  <p>
+    A nova stack foi inicializada em paralelo ao app atual. A partir daqui, a migracao segue
+    por extracao de servicos, infraestrutura primeiro e depois o modulo de mapeamento.
+  </p>
+</section>
+
+<section class="grid">
+  <article class="card">
+    <div class="card-kicker">Status</div>
+    <h3>Fase 0 concluida</h3>
+    <p>App FastAPI minima criada com layout base, CSS inicial e rota de saude.</p>
+    <a href="/health">Abrir health check</a>
+  </article>
+
+  <article class="card">
+    <div class="card-kicker">Documento</div>
+    <h3>Backlog de migracao</h3>
+    <p>O plano detalhado esta versionado em <code>docs/fastapi-htmx-migration-plan.md</code>.</p>
+  </article>
+
+  <article class="card">
+    <div class="card-kicker">Proxima etapa</div>
+    <h3>Extrair servicos</h3>
+    <p>O proximo passo tecnico e separar regra de negocio de Streamlit em modulos puros.</p>
+  </article>
+</section>
+{% endblock %}
